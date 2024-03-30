@@ -12,7 +12,7 @@ export default function Register() {
     });
 
     const [avatar, setAvatar] = useState('');
-    const [avatarPreview, setAvatarPriview] = useState('./images/default_avatar.png');
+    const [avatarPreview, setAvatarPreview] = useState('./images/default_avatar.png');
     const { loading, error, isAuthenticated } = useSelector(state => state.authState);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -42,7 +42,7 @@ export default function Register() {
             const reader = new FileReader();
             reader.onload = () => {
                 if (reader.readyState === 2) {
-                    setAvatarPriview(reader.result);
+                    setAvatarPreview(reader.result);
                     setAvatar(e.target.files[0])
                 }
             }
