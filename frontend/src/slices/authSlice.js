@@ -38,6 +38,7 @@ const authSlice = createSlice({
       return {
         ...state,
         isUpdated: false,
+        message: null,
       };
     },
     registerRequest(state, action) {
@@ -138,6 +139,47 @@ const authSlice = createSlice({
         error: action.payload,
       };
     },
+    forgotPasswordRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+      };
+    },
+    forgotPasswordSuccess(state, action) {
+      return {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
+    },
+    forgotPasswordFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
+    resetPasswordRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+      };
+    },
+    resetPasswordSuccess(state, action) {
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload.user,
+      };
+    },
+    resetPasswordFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
   },
 });
 
@@ -161,5 +203,11 @@ export const {
   updatePasswordRequest,
   updatePasswordSuccess,
   updatePasswordFail,
+  forgotPasswordRequest,
+  forgotPasswordSuccess,
+  forgotPasswordFail,
+  resetPasswordRequest,
+  resetPasswordSuccess,
+  resetPasswordFail,
 } = authSlice.actions;
 export default authSlice.reducer;

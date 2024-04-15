@@ -76,7 +76,7 @@ export default function UpdateProfile() {
       };
       err();
     }
-  }, [setName, dispatch, error, isUpdated, user]);
+  }, [dispatch, error, isUpdated, user]);
 
   return (
     <Fragment>

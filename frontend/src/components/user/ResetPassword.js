@@ -1,29 +1,40 @@
 import { Fragment, useEffect, useState } from "react";
 import MetaData from "../layouts/MetaData";
 import { useDispatch, useSelector } from "react-redux";
-import { clearAuthError, login } from "../../actions/userActions";
+import {
+  clearAuthError,
+  resetPassword as resetPasswordAction,
+} from "../../actions/userActions";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
+export default function ResetPassword() {
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useDispatch();
+  const { isAuthenticated, error } = useSelector((state) => state.authState);
   const navigate = useNavigate();
-  const { loading, error, isAuthenticated } = useSelector(
-    (state) => state.authState
-  );
+  const { token } = useParams();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    const data = {
+      password,
+      confirmPassword,
+    };
+    dispatch(resetPasswordAction(data, token));
   };
 
   useEffect(() => {
     if (isAuthenticated) {
+      toast("Password Reset Success!", {
+        position: "bottom-center",
+        type: "success",
+      });
       navigate("/");
       return;
     }
+
     if (error) {
       const err = async () => {
         return toast(error, {
@@ -36,25 +47,15 @@ export default function Login() {
       };
       err();
     }
-  }, [error, isAuthenticated, navigate, dispatch]);
+  }, [isAuthenticated, navigate, error, dispatch]);
 
   return (
     <Fragment>
-      <MetaData title={"Login"} />
+      <MetaData title={"Reset Password"} />
       <div className="row wrapper">
         <div className="col-10 col-lg-5">
           <form onSubmit={submitHandler} className="shadow-lg">
-            <h1 className="mb-3">Login</h1>
-            <div className="form-group">
-              <label htmlFor="email_field">Email</label>
-              <input
-                type="email"
-                id="email_field"
-                className="form-control"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
+            <h1 className="mb-3">New Password</h1>
 
             <div className="form-group">
               <label htmlFor="password_field">Password</label>
@@ -67,24 +68,24 @@ export default function Login() {
               />
             </div>
 
-            <Link to={"/password/forgot"} className="float-right mb-4">
-              Forgot Password?
-            </Link>
+            <div className="form-group">
+              <label htmlFor="confirm_password_field">Confirm Password</label>
+              <input
+                type="password"
+                id="confirm_password_field"
+                className="form-control"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
 
             <button
-              id="login_button"
+              id="new_password_button"
               type="submit"
               className="btn btn-block py-3"
-              disabled={loading}
             >
-              LOGIN
+              Set Password
             </button>
-
-            <Link to={"/register"}>
-              <a href="##" className="float-right mt-3">
-                New User?
-              </a>
-            </Link>
           </form>
         </div>
       </div>

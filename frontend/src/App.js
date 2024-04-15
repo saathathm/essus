@@ -17,6 +17,9 @@ import ProtectedRoute from "./components/route/ProtectedRoute";
 import UpdateProfile from "./components/user/UpdateProfile";
 import { useDispatch } from "react-redux";
 import UpdatePassword from "./components/user/UpdatePassword";
+import ForgotPassword from "./components/user/ForgotPassword";
+import ResetPassword from "./components/user/ResetPassword";
+import Cart from "./components/cart/Cart";
 
 function App() {
   const dispatch = useDispatch();
@@ -65,6 +68,15 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              <Route path="/password/forgot" element={<ForgotPassword />} />
+
+              <Route
+                path="/password/reset/:token"
+                element={<ResetPassword />}
+              />
+
+              <Route path="/cart" element={<Cart />} />
             </Routes>
           </div>
           <Footer />
