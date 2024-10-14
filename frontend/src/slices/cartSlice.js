@@ -7,6 +7,9 @@ const cartSlice = createSlice({
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [],
     loading: false,
+    shippingInfo: localStorage.getItem("shippingInfo")
+      ? JSON.parse(localStorage.getItem("shippingInfo"))
+      : {},
   },
   reducers: {
     addCartItemRequest(state, action) {
@@ -18,7 +21,7 @@ const cartSlice = createSlice({
     addCartItemSuccess(state, action) {
       const item = action.payload;
 
-      const isItemExist = state.items.find((i) => i.product == item.product);
+      const isItemExist = state.items.find((i) => i.product === item.product);
       if (isItemExist) {
         state = {
           ...state,
@@ -33,8 +36,51 @@ const cartSlice = createSlice({
       }
       return state;
     },
+    increaseCartItemQty(state, action) {
+      state.items = state.items.map((item) => {
+        if (item.product === action.payload) {
+          item.quantity = item.quantity + 1;
+        }
+        return item;
+      });
+      localStorage.setItem("cartItems", JSON.stringify(state.items));
+    },
+    decreaseCartItemQty(state, action) {
+      state.items = state.items.map((item) => {
+        if (item.product === action.payload) {
+          item.quantity = item.quantity - 1;
+        }
+        return item;
+      });
+      localStorage.setItem("cartItems", JSON.stringify(state.items));
+    },
+    removeItemFromCart(state, action) {
+      const filterItems = state.items.filter((item) => {
+        return item.product !== action.payload;
+      });
+      localStorage.setItem("cartItems", JSON.stringify(filterItems));
+      return {
+        ...state,
+        items: filterItems,
+      };
+    },
+    saveShippingInfo(state, action) {
+      localStorage.setItem("shippingInfo", JSON.stringify(action.payload));
+      return {
+        ...state,
+        shippingInfo: action.payload,
+      };
+    },
   },
 });
 
-export const { addCartItemRequest, addCartItemSuccess } = cartSlice.actions;
+export const {
+  addCartItemRequest,
+  addCartItemSuccess,
+  increaseCartItemQty,
+  decreaseCartItemQty,
+  removeItemFromCart,
+  saveShippingInfo,
+} = cartSlice.actions;
+
 export default cartSlice.reducer;

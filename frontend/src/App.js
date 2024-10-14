@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProductDetail from "./components/product/ProductDetail";
 import ProductSearch from "./components/product/ProductSearch";
 import Login from "./components/user/Login";
-import Register from "./components/user/Register";
+import Register from "./components/user/register.js";
 import { useEffect } from "react";
 import { loadUser } from "./actions/userActions";
 import Profile from "./components/user/Profile";
@@ -20,6 +20,7 @@ import UpdatePassword from "./components/user/UpdatePassword";
 import ForgotPassword from "./components/user/ForgotPassword";
 import ResetPassword from "./components/user/ResetPassword";
 import Cart from "./components/cart/Cart";
+import Shipping from "./components/cart/Shipping.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -77,6 +78,15 @@ function App() {
               />
 
               <Route path="/cart" element={<Cart />} />
+
+              <Route
+                path="/shipping"
+                element={
+                  <ProtectedRoute>
+                    <Shipping />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </div>
           <Footer />
